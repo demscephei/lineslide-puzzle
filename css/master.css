@@ -1,0 +1,37 @@
+body {
+  background: #17132A;
+}
+.h2-title{
+  margin: 8px;
+  font-size: 48px;
+  font-family: sans-serif;
+  padding: 8px;
+  /* background: #77a; */
+  color: #FDFCDC;
+  font-family: 'Share Tech Mono', monospace;
+  /* text-align: center; */
+}
+
+#status{
+  margin: 8px;
+  font-size: 24px;
+  font-family: sans-serif;
+  padding: 8px;
+  /* background: #77a; */
+  color: #FDFCDC;
+  font-family: 'Share Tech Mono', monospace;
+  /* text-align: center; */
+}
+
+#input-field {
+  border-style: none;
+  width: 480px;
+  height: 48px;
+  font-size: 24px;
+  background: #3A364D;
+  color: #FDFCDC;
+  padding: 16px;
+  box-sizing: border-box;
+  margin-bottom: 4px;
+  border-radius: 8px;
+}
