@@ -5,20 +5,20 @@ function setup() {
 }
 // Starting Map (where the tokens are positioned at the start)
 let startingMap = [
-    [ 2,  0,  0],
-    [ 2,  2,  1],
-    [ 1,  0,  0],
-    [ 0,  1,  1],
-		[ 0,  0,  1],
+	[2, 0, 0],
+	[2, 2, 1],
+	[1, 0, 0],
+	[0, 1, 1],
+	[0, 0, 1]
 ]
 
 // Goal Map (where the tokens should be to win the game)
 let goalMap = [
-    [ 1,  0,  1],
-    [ 1,  0,  0],
-    [ 0,  2,  1],
-    [ 0,  2,  0],
-		[ 1,  2,  0],
+	[1, 0, 1],
+	[1, 0, 0],
+	[0, 2, 1],
+	[0, 2, 0],
+	[1, 2, 0]
 ]
 
 
@@ -178,6 +178,13 @@ function draw() {
 					rect(x+width/2,y+width/2,width,width)
 
 				}
+				//Tile yellow
+				else if (tile === 3){
+					strokeWeight(1)
+					fill(204, 164, 59,150)
+					rect(x+width/2,y+width/2,width,width)
+
+				}
 				//Tile empty
 				 else if (tile == 0) {
 					fill(23, 19, 42)
@@ -224,6 +231,16 @@ function draw() {
 
 					strokeWeight(6)
 					stroke(257, 47, 143,40)
+					ellipse(x+width,y+width,width-8)
+				}
+				// Token yellow
+				else if (token === 3) {
+					strokeWeight(2)
+					stroke(249, 251, 61,255)
+					ellipse(x+width,y+width,width-8)
+
+					strokeWeight(6)
+					stroke(249, 251, 61,40)
 					ellipse(x+width,y+width,width-8)
 				}
 
