@@ -5,20 +5,20 @@ function setup() {
 }
 // Starting Map (where the tokens are positioned at the start)
 let startingMap = [
-	[2, 0, 0],
-	[2, 2, 1],
-	[1, 0, 0],
-	[0, 1, 1],
-	[0, 0, 1]
+	[2, 0, 0, 0, 0, 0],
+	[2, 2, 1, 0, 0, 0],
+	[1, 0, 0, 0, 0, 0],
+	[0, 1, 1, 0, 0, 0],
+	[0, 0, 1, 0, 0, 0]
 ]
 
 // Goal Map (where the tokens should be to win the game)
 let goalMap = [
-	[1, 0, 1],
-	[1, 0, 0],
-	[0, 2, 1],
-	[0, 2, 0],
-	[1, 2, 0]
+	[1, 0, 9, 0, 0, 0],
+	[1, 0, 0, 0, 1, 0],
+	[0, 2, 1, 0, 0, 0],
+	[9, 2, 0, 9, 0, 0],
+	[1, 2, 0, 0, 0, 0]
 ]
 
 
@@ -65,6 +65,32 @@ input.addEventListener("keyup", (event) => {
 	}
 });
 
+function checkMoveRight(row){
+	let canMove = true
+	tileMap[row].forEach((item,index) => {
+		if (item === 1 || item === 2 || item ===3) {
+			if (goalMap[row][(index + 1)] === 9) {
+					console.log("Blocked at index: " + (index + 1));
+					canMove = false
+			}
+		}
+	});
+	return canMove
+}
+
+function checkMoveLeft(row){
+	let canMove = true
+	tileMap[row].forEach((item,index) => {
+		if (item === 1 || item === 2 || item ===3) {
+			if (goalMap[row][(index - 1)] === 9) {
+					console.log("Blocked at index: " + (index - 1));
+					canMove = false
+			}
+		}
+	});
+	return canMove
+}
+
 function getColumn(col){
     newColumn = new Array()
     for (let i = 0; i < tileMap.length; i++){
@@ -88,7 +114,7 @@ function getRow(row){
 }
 
 function moveLeft(row){
-    if (tileMap[row][0] === 0){
+    if (tileMap[row][0] === 0 && checkMoveLeft(row)){
         let item = tileMap[row].shift()
         tileMap[row].push(item)
     }
@@ -97,12 +123,12 @@ function moveLeft(row){
 }
 
 function moveRight(row){
-    if (tileMap[row][tileMap[row].length - 1] === 0){
-        let item = tileMap[row].pop()
-        tileMap[row].unshift(item)
-    }
-    // console.log(tileMap)
-		return checkArrays(tileMap,goalMap)
+	    if (tileMap[row][tileMap[row].length - 1] === 0 && checkMoveRight(row)){
+	        let item = tileMap[row].pop()
+	        tileMap[row].unshift(item)
+	    }
+	    // console.log(tileMap)
+			return checkArrays(tileMap,goalMap)
 }
 
 function moveUp(col){
@@ -152,13 +178,29 @@ const checkArrays = function(arr1, arr2) {
 function draw() {
 	background(23, 19, 42)
 	// put drawing code here
-	width = 72
+	tileWidth = width / tileMap[0].length
+	tileHeight = height / tileMap.length
+	tilePadding = 8
+	aspectRatio = 0
+
+	if (tileWidth > tileHeight) {
+		aspectRatio = tileHeight / tileWidth
+		tileWidth = tileWidth * aspectRatio
+
+	} else if (tileHeight > tileWidth) {
+
+		aspectRatio = tileWidth / tileHeight
+		tileHeight = tileHeight * aspectRatio
+	}
+
+	// tileWidth = tileWidth / aspectRatio
+
 
 ///// Board ///////////////////////////////////////////////
 	for (let i = 0; i < goalMap.length; i++){
 			for(let j = 0; j < goalMap[i].length; j++){
-				let x = j * width
-				let y = i *width
+				let x = j * tileWidth
+				let y = i *tileHeight
 				tile = goalMap[i][j]
 //////////////////////////////////////////////////////////
 				stroke(253, 252, 220,255)
@@ -168,21 +210,21 @@ function draw() {
 				if (tile === 1){
 					strokeWeight(1)
 					fill(66, 83, 159,150)
-					rect(x+width/2,y+width/2,width,width)
+					rect(x,y,tileWidth,tileHeight)
 
 				}
 				//Tile red
 				else if (tile === 2){
 					strokeWeight(1)
 					fill(135, 13, 72,150)
-					rect(x+width/2,y+width/2,width,width)
+					rect(x,y,tileWidth,tileHeight)
 
 				}
 				//Tile yellow
 				else if (tile === 3){
 					strokeWeight(1)
 					fill(204, 164, 59,150)
-					rect(x+width/2,y+width/2,width,width)
+					rect(x,y,tileWidth,tileHeight)
 
 				}
 				//Tile empty
@@ -190,12 +232,17 @@ function draw() {
 					fill(23, 19, 42)
 					strokeWeight(1)
 					stroke(253, 252, 220,255)
-					rect(x+width/2,y+width/2,width,width)
+					rect(x,y,tileWidth,tileHeight)
 
 					strokeWeight(4)
 					stroke(253, 252, 220,40)
-					rect(x+width/2,y+width/2,width,width)
+					rect(x,y,tileWidth,tileHeight)
 
+				}
+
+				else if (tile == 9) {
+					fill(253, 252, 220,255)
+					rect(x,y,tileWidth,tileHeight)
 				}
 
 				// ellipse(x+width,y+width,width)
@@ -205,43 +252,44 @@ function draw() {
 	///// Tokens ////////////////////////////////////////////
 	for (let i = 0; i < tileMap.length; i++){
 			for(let j = 0; j < tileMap[i].length; j++){
-				let x = j * width
-				let y = i *width
+				let x = j * tileWidth
+				let y = i *tileHeight
 				let token = tileMap[i][j]
 //////////////////////////////////////////////////////////
 
 				// strokeWeight(4)
 				fill(255,0)
-
+				// ellipseMode(CORNER);
 				// Token blue
 				if (token === 1){
 					strokeWeight(2)
 					stroke(100, 189, 251,255)
-					ellipse(x+width,y+width,width-8)
+					ellipse(x+tileWidth/2,y+tileHeight/2,tileHeight-8)
 
 					strokeWeight(6)
 					stroke(100, 189, 251,40)
-					ellipse(x+width,y+width,width-8)
+					ellipse(x+tileWidth/2,y+tileHeight/2,tileHeight-8)
+
 				}
 				// Token red
 				else if (token === 2) {
 					strokeWeight(2)
 					stroke(257, 47, 143,255)
-					ellipse(x+width,y+width,width-8)
+					ellipse(x+tileWidth/2,y+tileHeight/2,tileHeight-8)
 
 					strokeWeight(6)
 					stroke(257, 47, 143,40)
-					ellipse(x+width,y+width,width-8)
+					ellipse(x+tileWidth/2,y+tileHeight/2,tileHeight-8)
 				}
 				// Token yellow
 				else if (token === 3) {
 					strokeWeight(2)
 					stroke(249, 251, 61,255)
-					ellipse(x+width,y+width,width-8)
+					ellipse(x+tileWidth/2,y+tileHeight/2,tileHeight-8)
 
 					strokeWeight(6)
 					stroke(249, 251, 61,40)
-					ellipse(x+width,y+width,width-8)
+					ellipse(x+tileWidth/2,y+tileHeight/2,tileHeight-8)
 				}
 
 				// rect(x,y,width,width)

@@ -1,5 +1,6 @@
 body {
   background: #17132A;
+
 }
 .h2-title{
   margin: 8px;
@@ -10,6 +11,7 @@ body {
   color: #FDFCDC;
   font-family: 'Share Tech Mono', monospace;
   /* text-align: center; */
+
 }
 
 #status{
@@ -33,5 +35,13 @@ body {
   padding: 16px;
   box-sizing: border-box;
   margin-bottom: 4px;
+  margin-top: 16px;
   border-radius: 8px;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
