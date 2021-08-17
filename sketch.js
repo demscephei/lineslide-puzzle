@@ -5,20 +5,22 @@ function setup() {
 }
 // Starting Map (where the tokens are positioned at the start)
 let startingMap = [
-	[2, 0, 0, 0, 0, 0],
-	[2, 2, 1, 0, 0, 0],
-	[1, 0, 0, 0, 0, 0],
-	[0, 1, 1, 0, 0, 0],
-	[0, 0, 1, 0, 0, 0]
+	[2, 0, 0, 0, 0],
+	[2, 2, 1, 0, 0],
+	[1, 0, 0, 0, 0],
+	[0, 1, 1, 0, 0],
+	[0, 1, 1, 0, 0],
+	[0, 0, 1, 0, 0]
 ]
 
 // Goal Map (where the tokens should be to win the game)
 let goalMap = [
-	[1, 0, 9, 0, 0, 0],
-	[1, 0, 0, 0, 1, 0],
-	[0, 2, 1, 0, 0, 0],
-	[9, 2, 0, 9, 0, 0],
-	[1, 2, 0, 0, 0, 0]
+	[1, 0, 9, 0, 0],
+	[1, 0, 0, 0, 1],
+	[0, 2, 1, 0, 0],
+	[9, 2, 0, 9, 0],
+	[9, 2, 0, 9, 0],
+	[1, 2, 0, 0, 0]
 ]
 
 
@@ -91,6 +93,38 @@ function checkMoveLeft(row){
 	return canMove
 }
 
+function checkMoveUp(col){
+	let canMove = true
+	tileMap.forEach((item,index) => {
+		// console.log(item[col])
+		if (item[col] === 1 || item[col] === 2 || item[col] ===3) {
+			// console.log("Found token: " + item[col])
+			// console.log("Above row: " + goalMap[index - 1][col])
+			if (goalMap[index - 1][col] === 9) {
+					// console.log("Blocked at index: " + (index[col]));
+					canMove = false
+			}
+		}
+	});
+	return canMove
+}
+
+function checkMoveDown(col){
+	let canMove = true
+	tileMap.forEach((item,index) => {
+		// console.log(item[col])
+		if (item[col] === 1 || item[col] === 2 || item[col] ===3) {
+			// console.log("Found token: " + item[col])
+			// console.log("Above row: " + goalMap[index - 1][col])
+			if (goalMap[index + 1][col] === 9) {
+					// console.log("Blocked at index: " + (index[col]));
+					canMove = false
+			}
+		}
+	});
+	return canMove
+}
+
 function getColumn(col){
     newColumn = new Array()
     for (let i = 0; i < tileMap.length; i++){
@@ -135,7 +169,7 @@ function moveUp(col){
 	if (col < tileMap.length){
 	    let column = getColumn(col)
 
-	    if (column[0] === 0){
+	    if (column[0] === 0 && checkMoveUp(col)){
 	        let item = column.shift()
 	        column.push(item)
 	    }
@@ -153,7 +187,7 @@ function moveDown(col){
 	if (col < tileMap.length){
 	    let column = getColumn(col)
 
-	    if (column[column.length - 1] === 0){
+	    if (column[column.length - 1] === 0 && checkMoveDown(col)){
 	        let item = column.pop()
 	        column.unshift(item)
 	    }
