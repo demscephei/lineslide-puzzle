@@ -1,7 +1,3 @@
-let animX;
-let animY;
-let speed = 1;
-
 const levelList =[
 	{
 		"start": [
@@ -34,10 +30,9 @@ const levelList =[
 ]
 
 function setup() {
-	let canvas = createCanvas(480, 480);
+	frameRate(24)
+	canvas = createCanvas(480, 480);
 	canvas.parent('game-container');
-	// animX = width / tileMap[0].length / 2
-	// animY = height / tileMap.length / 2
 }
 
 // Gets input field and status ("You win!") elements
@@ -50,6 +45,14 @@ let startingMap;
 let goalMap;
 
 let levelButtons = [1,2]
+
+function inside(x, y, w, h){
+ if(mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
+  return true;
+ } else {
+  return false;
+ }
+}
 
 function createBtn(){
 	for(let b = 0; b < levelButtons.length; b++){
@@ -210,7 +213,6 @@ function moveLeft(row){
     if (tileMap[row][0] === 0 && checkMoveLeft(row)){
       let item = tileMap[row].shift()
       tileMap[row].push(item)
-			// animX -= 1 * tileWidth
     }
     // console.log(tileMap)
 		return checkArrays(tileMap,goalMap)
@@ -274,10 +276,11 @@ const checkArrays = function(arr1, arr2) {
 
 /// DRAW STUFF ////////////////////////////////////////////////////
 function draw() {
-	background(23, 19, 42)
-	tileWidth = width / tileMap[0].length
-	tileHeight = height / tileMap.length
+
 	tilePadding = 8
+	tileWidth = width / tileMap[0].length - tilePadding
+	tileHeight = height / tileMap.length - tilePadding
+
 	aspectRatio = 0
 
 	if (tileWidth > tileHeight) {
@@ -290,11 +293,27 @@ function draw() {
 		tileHeight = tileHeight * aspectRatio
 	}
 
+	background(23, 19, 42)
+
+	push()
+	stroke(255)
+	strokeWeight(1)
+	fill(255)
+	textFont('Helvetica');
+	textSize(24)
+	let mX = floor(mouseX/tileWidth)
+	let mY = floor(mouseY/tileHeight)
+	let pmX = floor(pmouseX/tileWidth)
+	let pmY = floor(pmouseY/tileHeight)
+	// text("X: "+ mX, 16, width/4);
+	// text("Y: "+ mY, 16, width/5);
+	pop()
+
 ///// Board ///////////////////////////////////////////////
 	for (let i = 0; i < goalMap.length; i++){
 			for(let j = 0; j < goalMap[i].length; j++){
-				let x = j * tileWidth
-				let y = i *tileHeight
+				let x = j * tileWidth + tilePadding
+				let y = i *tileHeight + tilePadding
 				tile = goalMap[i][j]
 //////////////////////////////////////////////////////////
 				stroke(253, 252, 220,255)
@@ -338,28 +357,46 @@ function draw() {
 					fill(253, 252, 220,255)
 					rect(x,y,tileWidth,tileHeight)
 				}
+
+				push()
+				if( inside(x, y, tileWidth,tileHeight) ){
+					noFill()
+					stroke(0, 252, 0,255)
+					strokeWeight(5)
+					rect(x,y,tileWidth,tileHeight)
+					if (mouseIsPressed){
+						fill(0,250,0,50)
+						rect(x,y,tileWidth,tileHeight)
+						// console.log(mX,mY,pmX,pmY)
+						if (mX - pmX < 0){
+							// console.log("left")
+							moveLeft(mY)
+						} else if (mX - pmX > 0){
+							// console.log("right")
+							moveRight(mY)
+						} else if (mY - pmY < 0){
+							moveUp(mX)
+							// console.log("up")
+						} else if (mY - pmY > 0){
+							moveDown(mX)
+							// console.log("down")
+						}
+					}
+				} else {
+						noStroke()
+					}
+				pop()
 			}
 		}
 
 	///// Tokens ////////////////////////////////////////////
-
-	// animX += speed;
-	// ellipse(animX,128,32)
-
 	for (let i = 0; i < tileMap.length; i++){
 			for(let j = 0; j < tileMap[i].length; j++){
-				let x = j * tileWidth
-				let y = i * tileHeight
+				let x = j * tileWidth + tilePadding
+				let y = i * tileHeight + tilePadding
 				let token = tileMap[i][j]
 
-				// animX[j] = x[j]
 //////////////////////////////////////////////////////////
-
-				// animX = x
-				// if (animX[j] < x[j]) {
-				// 	animX[j] -= speed
-				// }
-
 				// strokeWeight(4)
 				fill(255,0)
 				// ellipseMode(CORNER);
