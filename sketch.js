@@ -1,16 +1,56 @@
 const levelList =[
 	{
 		"start": [
-			[0, 0, 1],
-			[0, 0, 0],
-			[1, 0, 1],
+			[0, 0],
+			[1, 1],
+			[0, 0],
+			[0, 1]
 		],
 		"goal": [
-			[1, 0, 0],
-			[9, 1, 0],
-			[0, 0, 1]
+			[1, 9],
+			[0, 0],
+			[9, 1],
+			[1, 0]
 		]
 	},
+	{
+	"start": [
+		[0, 0, 1],
+		[0, 0, 0],
+		[1, 0, 1]
+	],
+	"goal": [
+		[9, 1, 0],
+		[0, 1, 0],
+		[0, 9, 1]
+	]
+},
+{
+"start": [
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[1, 0, 1, 0],
+	[0, 0, 0, 0]
+],
+"goal": [
+	[0, 1, 9, 0],
+	[0, 9, 0, 0],
+	[1, 0, 1, 0],
+	[0, 9, 0, 0]
+]
+},
+{
+"start": [
+	[0, 0, 1],
+	[0, 0, 0],
+	[1, 0, 1]
+],
+"goal": [
+	[9, 1, 0],
+	[9, 1, 0],
+	[0, 0, 1]
+]
+},
 {
 		"start": [
 			[2, 0, 0],
@@ -26,7 +66,47 @@ const levelList =[
 			[0, 2, 0],
 			[1, 2, 0]
 		]
-	}
+	},
+	{
+			"start": [
+				[2, 1, 1],
+				[2, 0, 1],
+				[0, 0, 1],
+				[0, 1, 0],
+				[0, 0, 0]
+			],
+			"goal": [
+				[1, 0, 0],
+				[1, 2, 0],
+				[9, 2, 0],
+				[1, 0, 1],
+				[9, 1, 9]
+			]
+		},
+		{
+				"start": [
+					[2, 2, 0],
+					[1, 0, 0],
+					[0, 0, 3],
+					[2, 0, 0],
+					[1, 1, 0]
+				],
+				"goal": [
+					[1, 1, 0],
+					[2, 0, 0],
+					[9, 9, 3],
+					[1, 0, 0],
+					[2, 2, 0]
+				]
+			},
+			{
+			"start": [
+				[2, 2, 0]
+			],
+			"goal": [
+				[1, 1, 0]
+			]
+		}
 ]
 
 function setup() {
@@ -43,8 +123,7 @@ const btnList = document.getElementById("button-list");
 let tileMap = new Array();
 let startingMap;
 let goalMap;
-
-let levelButtons = [1,2]
+let currentLevel;
 
 function inside(x, y, w, h){
  if(mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
@@ -55,9 +134,9 @@ function inside(x, y, w, h){
 }
 
 function createBtn(){
-	for(let b = 0; b < levelButtons.length; b++){
+	for(let b = 0; b < levelList.length; b++){
 		let btn = document.createElement("button")
-		let txt = document.createTextNode("Level " + levelButtons[b])
+		let txt = document.createTextNode("Level " + (b+1))
 		// btn.innerHTML = "Level "
 		btn.appendChild(txt)
 		btn.addEventListener("click",function(){
@@ -79,6 +158,8 @@ function loadLevel(level) {
 
 		// TileMap gets assigned Starting Map (for future game resetting)
 		tileMap = JSON.parse(JSON.stringify(startingMap));
+
+		currentLevel = level;
 }
 
 loadLevel(0)
@@ -230,7 +311,7 @@ function moveRight(row){
 
 // Moves the current column up once
 function moveUp(col){
-	if (col < tileMap.length){
+	// if (col < getColumn.length){
 	    let column = getColumn(col)
 
 	    if (column[0] === 0 && checkMoveUp(col)){
@@ -243,13 +324,13 @@ function moveUp(col){
 	        // console.log(tileMap[i])
 
 	    }
-	}
+
 	return checkArrays(tileMap,goalMap)
 }
 
 // Moves the current column down once
 function moveDown(col){
-	if (col < tileMap.length){
+	// if (col < tileMap.length){
 	    let column = getColumn(col)
 
 	    if (column[column.length - 1] === 0 && checkMoveDown(col)){
@@ -262,7 +343,7 @@ function moveDown(col){
 	        // console.log(tileMap[i])
 
 	    }
-	}
+	// }
 	return checkArrays(tileMap,goalMap)
 }
 
@@ -295,12 +376,15 @@ function draw() {
 
 	background(23, 19, 42)
 
+
 	push()
-	stroke(255)
+	stroke(255,100)
 	strokeWeight(1)
-	fill(255)
+	fill(255,100)
 	textFont('Helvetica');
-	textSize(24)
+	textSize(16)
+	textAlign(CENTER)
+	text("Level " + (currentLevel + 1), width/2, height);
 	let mX = floor(mouseX/tileWidth)
 	let mY = floor(mouseY/tileHeight)
 	let pmX = floor(pmouseX/tileWidth)
