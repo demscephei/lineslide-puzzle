@@ -3,6 +3,10 @@ html, body {
   background: #17132A;
 }
 
+html {
+  position: fixed;
+}
+
 body{
   margin: 0;
   display: flex;
