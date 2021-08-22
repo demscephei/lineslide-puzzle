@@ -14,12 +14,12 @@ const levelList =[
 			[0, 1],
 			[0, 1],
 			[0, 0],
-			[0, 0]
+			[0, 1]
 		],
 		"goal": [
 			[1, 0],
 			[0, 0],
-			[0, 0]
+			[0, 1],
 			[1, 0]
 		]
 	},
@@ -44,23 +44,21 @@ const levelList =[
 		[1, 0, 1]
 	],
 	"goal": [
-		[9, 1, 0],
-		[0, 1, 0],
-		[0, 9, 1]
+		[9, 0, 1],
+		[0, 1, 1],
+		[0, 9, 0]
 	]
 },
 {
 "start": [
-	[0, 0, 0, 0],
-	[0, 0, 0, 0],
-	[1, 0, 1, 0],
-	[0, 0, 0, 0]
+	[1, 0, 0],
+	[0, 0, 1],
+	[1, 0, 1]
 ],
 "goal": [
-	[0, 1, 9, 0],
-	[0, 9, 0, 0],
-	[1, 0, 1, 0],
-	[0, 9, 0, 0]
+	[0, 1, 9],
+	[1, 9, 0],
+	[1, 0, 1]
 ]
 },
 {
@@ -127,8 +125,13 @@ const levelList =[
 
 function setup() {
 	frameRate(24)
-	canvas = createCanvas(480, 480);
+	canvas = createCanvas(windowWidth/2, windowHeight/2);
+	canvas.style('display', 'block');
 	canvas.parent('game-container');
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth/2, windowHeight/2);
 }
 
 // Gets input field and status ("You win!") elements

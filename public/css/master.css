@@ -1,7 +1,15 @@
-body {
+html, body {
+  height: 100%;
   background: #17132A;
-
 }
+
+body{
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .h2-title{
   margin: 8px;
   font-size: 48px;
