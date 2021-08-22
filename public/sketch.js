@@ -98,15 +98,7 @@ const levelList =[
 					[1, 0, 0],
 					[2, 2, 0]
 				]
-			},
-			{
-			"start": [
-				[2, 2, 0]
-			],
-			"goal": [
-				[1, 1, 0]
-			]
-		}
+			}
 ]
 
 function setup() {
