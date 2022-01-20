@@ -19,8 +19,8 @@ const levelList =[
 		"goal": [
 			[1, 0],
 			[0, 0],
-			[0, 1],
-			[1, 0]
+			[1, 1],
+			[0, 0]
 		]
 	},
 	{
@@ -65,11 +65,11 @@ const levelList =[
 "start": [
 	[0, 0, 1],
 	[0, 0, 0],
-	[1, 0, 1]
+	[0, 1, 1]
 ],
 "goal": [
 	[9, 1, 0],
-	[9, 1, 0],
+	[9, 1, 9],
 	[0, 0, 1]
 ]
 },
@@ -120,7 +120,23 @@ const levelList =[
 					[1, 0, 0],
 					[2, 2, 0]
 				]
-			}
+			},
+			{
+					"start": [
+						[2, 0, 0],
+						[0, 2, 3],
+						[0, 0, 0],
+						[1, 0, 3],
+						[0, 1, 0]
+					],
+					"goal": [
+						[0, 3, 2],
+						[2, 0, 0],
+						[9, 9, 9],
+						[1, 0, 1],
+						[9, 3, 0]
+					]
+				}
 ]
 
 function setup() {
@@ -155,7 +171,7 @@ function inside(x, y, w, h){
 function createBtn(){
 	for(let b = 0; b < levelList.length; b++){
 		let btn = document.createElement("button")
-		let txt = document.createTextNode("Levelasdasd " + (b+1))
+		let txt = document.createTextNode("Level" + (b+1))
 		// btn.innerHTML = "Level "
 		btn.appendChild(txt)
 		btn.addEventListener("click",function(){
@@ -177,6 +193,9 @@ function loadLevel(level) {
 
 		// TileMap gets assigned Starting Map (for future game resetting)
 		tileMap = JSON.parse(JSON.stringify(startingMap));
+
+		// Make the "You win!" disappear
+		status.textContent = ""
 
 		currentLevel = level;
 }
@@ -367,8 +386,27 @@ function moveDown(col){
 }
 
 // Checks both map arrays to see if the player won
+
+// const checkArrays = function(arr1, arr2) {
+//   if (arr1.toString() === arr2.toString()){
+// 		// status.textContent = "You win!"
+// 	}
+// 	return checkWin(arr1,arr2)
+// }
+
 const checkArrays = function(arr1, arr2) {
-  if (arr1.toString() === arr2.toString()){
+	let match = []
+	for (let i = 0; i < arr1.length; i++){
+			for(let j = 0; j < arr1[i].length; j++){
+				if (arr1[i][j] === 1 || arr1[i][j] === 2 || arr1[i][j] ===3){
+				// console.log('Array: ' + '' + arr1[i][j])
+				// console.log('Is same?: Arr1: ' + arr1[i][j] + 'vs. Arr2: ' + arr2[i][j])
+				match.push(arr1[i][j] === arr2[i][j])
+			}
+		}
+	}
+	// console.log(match)
+	if (match.every(v => v === true)){
 		status.textContent = "You win!"
 		return true;
 	}
