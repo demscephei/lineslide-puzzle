@@ -155,7 +155,7 @@ function inside(x, y, w, h){
 function createBtn(){
 	for(let b = 0; b < levelList.length; b++){
 		let btn = document.createElement("button")
-		let txt = document.createTextNode("Level " + (b+1))
+		let txt = document.createTextNode("Levelasdasd " + (b+1))
 		// btn.innerHTML = "Level "
 		btn.appendChild(txt)
 		btn.addEventListener("click",function(){
@@ -201,26 +201,26 @@ const funcDict = {
 }
 
 // Makes the "command line" work when you press the Enter key
-input.addEventListener("keyup", (event) => {
-	if (event.keyCode === 13){
-		event.preventDefault();
-
-	  const [direction, val] = input.value.split(' ');
-	  const fn = funcDict[direction.toLowerCase()];
-
-	  if (fn) {
-	    fn(val);
-			cmdHistory.push(input.value)
-	  }
-
-		input.value = ''
-
-	} else if (event.keyCode === 38){
-		if (cmdHistory.length > 0){
-				input.value = cmdHistory[cmdHistory.length - 1]
-		}
-	}
-});
+// input.addEventListener("keyup", (event) => {
+// 	if (event.keyCode === 13){
+// 		event.preventDefault();
+//
+// 	  const [direction, val] = input.value.split(' ');
+// 	  const fn = funcDict[direction.toLowerCase()];
+//
+// 	  if (fn) {
+// 	    fn(val);
+// 			cmdHistory.push(input.value)
+// 	  }
+//
+// 		input.value = ''
+//
+// 	} else if (event.keyCode === 38){
+// 		if (cmdHistory.length > 0){
+// 				input.value = cmdHistory[cmdHistory.length - 1]
+// 		}
+// 	}
+// });
 
 // Checks if there's a wall on the right
 function checkMoveRight(row){
@@ -374,6 +374,10 @@ const checkArrays = function(arr1, arr2) {
 	}
 }
 
+function touchMoved(){
+	return false;
+}
+
 /// DRAW STUFF ////////////////////////////////////////////////////
 function draw() {
 
@@ -404,10 +408,13 @@ function draw() {
 	textSize(16)
 	textAlign(CENTER)
 	text("Level " + (currentLevel + 1), width/2, height);
+	let smoothmX = 0
+	let smoothmY = 0
 	let mX = floor(mouseX/tileWidth)
 	let mY = floor(mouseY/tileHeight)
 	let pmX = floor(pmouseX/tileWidth)
 	let pmY = floor(pmouseY/tileHeight)
+
 	// text("X: "+ mX, 16, width/4);
 	// text("Y: "+ mY, 16, width/5);
 	pop()
@@ -426,21 +433,21 @@ function draw() {
 				if (tile === 1){
 					strokeWeight(1)
 					fill(66, 83, 159,150)
-					rect(x,y,tileWidth,tileHeight)
+					rect(x,y,tileWidth,tileHeight,10)
 
 				}
 				//Tile red
 				else if (tile === 2){
 					strokeWeight(1)
 					fill(135, 13, 72,150)
-					rect(x,y,tileWidth,tileHeight)
+					rect(x,y,tileWidth,tileHeight,10)
 
 				}
 				//Tile yellow
 				else if (tile === 3){
 					strokeWeight(1)
 					fill(204, 164, 59,150)
-					rect(x,y,tileWidth,tileHeight)
+					rect(x,y,tileWidth,tileHeight,10)
 
 				}
 				//Tile empty
@@ -448,17 +455,17 @@ function draw() {
 					fill(23, 19, 42)
 					strokeWeight(1)
 					stroke(253, 252, 220,255)
-					rect(x,y,tileWidth,tileHeight)
+					rect(x,y,tileWidth,tileHeight,10)
 
-					strokeWeight(4)
-					stroke(253, 252, 220,40)
-					rect(x,y,tileWidth,tileHeight)
+					// strokeWeight(4)
+					// stroke(253, 252, 220,40)
+					// rect(x,y,tileWidth,tileHeight,10)
 
 				}
 
 				else if (tile == 9) {
 					fill(253, 252, 220,255)
-					rect(x,y,tileWidth,tileHeight)
+					rect(x,y,tileWidth,tileHeight,10)
 				}
 
 				push()
@@ -468,6 +475,8 @@ function draw() {
 					strokeWeight(5)
 					rect(x,y,tileWidth,tileHeight)
 					if (mouseIsPressed){
+						smoothmX = mouseX
+						smoothmY = mouseY
 						fill(0,250,0,50)
 						rect(x,y,tileWidth,tileHeight)
 						// console.log(mX,mY,pmX,pmY)
